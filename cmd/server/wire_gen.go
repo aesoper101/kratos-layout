@@ -10,6 +10,7 @@ import (
 	"github.com/aeoper101/kratos-layout/internal/biz"
 	"github.com/aeoper101/kratos-layout/internal/conf"
 	"github.com/aeoper101/kratos-layout/internal/data"
+	"github.com/aeoper101/kratos-layout/internal/i18n"
 	"github.com/aeoper101/kratos-layout/internal/server"
 	"github.com/aeoper101/kratos-layout/internal/service"
 	"github.com/aesoper101/kratos-utils/protobuf/types/confpb"
@@ -31,8 +32,13 @@ func wireApp(confServer *conf.Server, confData *conf.Data, registry *confpb.Regi
 	services := &service.Services{
 		GreeterService: greeterService,
 	}
-	httpServer := server.NewHTTPServer(confServer, services, logger)
-	grpcServer := server.NewGRPCServer(confServer, services, logger)
+	i18nBundle, err := i18n.NewI18nBundle()
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	httpServer := server.NewHTTPServer(confServer, services, i18nBundle, logger)
+	grpcServer := server.NewGRPCServer(confServer, services, i18nBundle, logger)
 	app := newApp(logger, httpServer, grpcServer, registry)
 	return app, func() {
 		cleanup()
