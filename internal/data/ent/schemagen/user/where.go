@@ -4,7 +4,7 @@ package user
 
 import (
 	"entgo.io/ent/dialect/sql"
-	"github.com/aeoper101/kratos-layout/internal/data/ent/predicate"
+	"github.com/aeoper101/kratos-layout/internal/data/ent/schemagen/predicate"
 )
 
 // ID filters vertices based on their ID field.
