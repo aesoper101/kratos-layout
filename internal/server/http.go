@@ -5,6 +5,7 @@ import (
 	v1 "github.com/aeoper101/kratos-layout/api/helloworld/v1"
 	"github.com/aeoper101/kratos-layout/internal/conf"
 	"github.com/aeoper101/kratos-layout/internal/service"
+	"github.com/aesoper101/go-utils/validatorx"
 	"github.com/aesoper101/kratos-utils/pkg/encoder"
 	"github.com/aesoper101/kratos-utils/pkg/middleware/metrics"
 	"github.com/aesoper101/kratos-utils/pkg/middleware/realip"
@@ -39,7 +40,7 @@ func NewHTTPServer(c *conf.Server, services *service.Services, trans *ut.Univers
 			metadata.Server(),
 			requestid.Server(),
 			translator.Translate(translator.WithUniversalTranslator(trans)),
-			validate.Validator(),
+			validate.Validator(validate.WithRegisterDefaultTranslations(validatorx.RegisterDefaultTranslations)),
 			metrics.Server(),
 		),
 		http.Filter(
