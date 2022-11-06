@@ -5,6 +5,7 @@ import (
 	v1 "github.com/aeoper101/kratos-layout/api/helloworld/v1"
 	"github.com/aeoper101/kratos-layout/internal/conf"
 	"github.com/aeoper101/kratos-layout/internal/service"
+	"github.com/aesoper101/go-utils/validatorx"
 	"github.com/aesoper101/kratos-utils/pkg/middleware/translator"
 	"github.com/aesoper101/kratos-utils/pkg/middleware/validate"
 	"github.com/go-kratos/kratos/v2/middleware/auth/jwt"
@@ -42,7 +43,7 @@ func NewGRPCServer(c *conf.Server, services *service.Services, trans *ut.Univers
 				return []byte(c.Grpc.AuthKey.Value), nil
 			}),
 			translator.Translate(translator.WithUniversalTranslator(trans)),
-			validate.Validator(),
+			validate.Validator(validate.WithRegisterDefaultTranslations(validatorx.RegisterDefaultTranslations)),
 			metrics.Server(),
 		),
 	}
